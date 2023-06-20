@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views import generic
+from django.views import generic, View
 
 from todo.forms import TaskForm
 from todo.models import Task, Tag
@@ -36,6 +36,14 @@ class TaskDeleteView(generic.DeleteView):
     success_url = reverse_lazy("todo:index")
 
 
+class TaskUpdateStatusView(View):
+    def get(self, request, pk):
+        task = get_object_or_404(Task, pk=pk)
+        task.done_mark = not task.done_mark
+        task.save()
+        return HttpResponseRedirect(reverse_lazy("todo:index"))
+
+
 class TagListView(generic.ListView):
     model = Tag
     paginate_by = 5
@@ -58,11 +66,11 @@ class TagDeleteView(generic.DeleteView):
     success_url = reverse_lazy("todo:tag-list")
 
 
-def complete_or_undo_task(request, pk):
-    task = Task.objects.get(pk=pk)
-    if task.done_mark:
-        task.done_mark = False
-    else:
-        task.done_mark = True
-    task.save()
-    return HttpResponseRedirect(reverse_lazy("todo:index"))
+# def complete_or_undo_task(request, pk):
+#     task = Task.objects.get(pk=pk)
+#     if task.done_mark:
+#         task.done_mark = False
+#     else:
+#         task.done_mark = True
+#     task.save()
+#     return HttpResponseRedirect(reverse_lazy("todo:index"))

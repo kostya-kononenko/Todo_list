@@ -10,7 +10,7 @@
   {% if tasks %}
     {% for task in tasks %}
       <p><strong>{{task.name}}{% if task.done_mark %} <span class="text-success">Done</span>{% else %} <span class="text-danger">Not done</span>{% endif %}</strong></p>
-          {% if task.done_mark %}
+          {% if task.done_mark is True %}
             <a href="{% url 'todo:complete-or-undo-task' pk=task.id%}" class="btn btn-dark link-to-page">Undo</a>
           {% else %}
             <a href="{% url 'todo:complete-or-undo-task' pk=task.id%}" class="btn btn-success link-to-page">Complete</a>
