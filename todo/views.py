@@ -64,13 +64,3 @@ class TagUpdateView(generic.UpdateView):
 class TagDeleteView(generic.DeleteView):
     model = Tag
     success_url = reverse_lazy("todo:tag-list")
-
-
-# def complete_or_undo_task(request, pk):
-#     task = Task.objects.get(pk=pk)
-#     if task.done_mark:
-#         task.done_mark = False
-#     else:
-#         task.done_mark = True
-#     task.save()
-#     return HttpResponseRedirect(reverse_lazy("todo:index"))
